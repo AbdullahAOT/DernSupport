@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Using shared layout
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DernSupport2</title>
+    <style>
+        .admin-hero {
+            background-color: #343a40;
+            color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+            .admin-hero h1 {
+                margin: 0;
+                font-size: 2.5rem;
+            }
+
+        .admin-content {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .admin-item {
+            flex: 1 1 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .admin-item h3 {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            .admin-item p {
+                font-size: 1rem;
+                color: #555;
+            }
+
+        .admin-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+            .admin-button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <section class="admin-hero">
+        <h1>Admin Dashboard</h1>
+        <p>Manage your application and settings from this dashboard.</p>
+    </section>
+
+    <section class="admin-content">
+        <div class="admin-section">
+            <div class="admin-item">
+                <h3>User Management</h3>
+                <p>Manage users, roles, and permissions.</p>
+                <button class="admin-button">Go to Users</button>
+            </div>
+            <div class="admin-item">
+                <h3>Settings</h3>
+                <p>Configure application settings and preferences.</p>
+                <button class="admin-button">Go to Settings</button>
+            </div>
+            <div class="admin-item">
+                <h3>Reports</h3>
+                <p>View and export system reports.</p>
+                <button class="admin-button">Go to Reports</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

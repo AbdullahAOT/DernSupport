@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DernSupport2</title>
+    <style>
+        .home-hero {
+            background: linear-gradient(to right, #007bff, #6610f2);
+            color: #fff;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+            .home-hero h1 {
+                margin: 0;
+                font-size: 3rem;
+                font-weight: bold;
+            }
+
+            .home-hero p {
+                font-size: 1.25rem;
+                margin-top: 10px;
+                line-height: 1.6;
+            }
+
+        .home-content {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            flex: 1 1 30%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .feature-item h3 {
+                font-size: 1.5rem;
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            .feature-item p {
+                font-size: 1rem;
+                color: #555;
+            }
+
+        .call-to-action {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+            .call-to-action button {
+                background-color: #007bff;
+                color: #fff;
+                padding: 15px 30px;
+                border: none;
+                border-radius: 50px;
+                cursor: pointer;
+                font-size: 1.1rem;
+                transition: background-color 0.3s;
+            }
+
+                .call-to-action button:hover {
+                    background-color: #0056b3;
+                }
+    </style>
+</head>
+<body>
+    <section class="home-hero">
+        <h1>Welcome to DernSupport2</h1>
+        <p>Your trusted partner in IT support. We are committed to delivering top-notch technical support solutions for your business.</p>
+    </section>
+
+    <section class="home-content">
+        <div class="feature-section">
+            <div class="feature-item">
+                <h3>Reliable Support</h3>
+                <p>Our team of experts is available 24/7 to provide you with the assistance you need.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Innovative Solutions</h3>
+                <p>We offer innovative and customized IT solutions tailored to your business needs.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Client-Centric Approach</h3>
+                <p>We prioritize our clients, ensuring personalized and dedicated support every step of the way.</p>
+            </div>
+        </div>
+
+        <div class="call-to-action">
+            <button onclick="location.href='@Url.Action("ContactUs", "Home")'">Get in Touch</button>
+        </div>
+    </section>
+</body>
+</html>

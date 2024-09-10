@@ -12,8 +12,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); // Add Razor Pages support
+// Remove Razor Pages support and keep only MVC with views.
+builder.Services.AddControllersWithViews(); // Adds support for MVC with views
 
 // Configure Entity Framework Core with SQL Server
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -99,7 +99,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error"); // Update to handle Razor Page errors
+    app.UseExceptionHandler("/Home/Error"); // Update to handle MVC errors
     app.UseHsts();
 }
 
@@ -111,7 +111,7 @@ app.UseRouting();
 app.UseAuthentication(); // Add authentication middleware
 app.UseAuthorization(); // Add authorization middleware
 
-app.MapRazorPages(); // Map Razor Pages
+// Map the default route for MVC controllers
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

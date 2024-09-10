@@ -1,0 +1,167 @@
+﻿@{
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DernSupport2</title>
+    <link rel="stylesheet" href="~/css/site.css" /> <!-- Link to your main CSS file -->
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #000; /* Changed to black */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5rem;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar-toggler {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .navbar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-item {
+            margin: 0;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #fff;
+            padding: 5px 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .nav-link:hover,
+            .nav-link.active {
+                background-color: #333; /* Darker gray hover effect for contrast */
+                border-radius: 5px;
+            }
+
+            .nav-link.disabled {
+                color: #ccc;
+                pointer-events: none;
+            }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Responsive styles */
+        @@media (max-width: 768px) {
+            .navbar-toggler {
+                display: block;
+            }
+
+            .navbar-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #000; /* Ensure the responsive menu is also black */
+                position: absolute;
+                top: 60px;
+                left: 0;
+                padding: 10px 0;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+
+                .navbar-menu.show {
+                    display: flex;
+                }
+
+            .nav-link {
+                padding: 10px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="@Url.Action("Index", "Home")">DernSupport</a>
+        <button class="navbar-toggler" onclick="toggleNavbar()">☰</button>
+        <div class="navbar-menu" id="navbarMenu">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="@Url.Action("Index", "Home")">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AboutUs", "Home")">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("ContactUs", "Home")">Contact Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Login", "Home")">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Register", "Home")">Register</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        @RenderBody() <!-- Renders the content of each view -->
+    </div>
+
+    <footer>
+        <p>&copy; 2024 DernSupport. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Navbar Toggle -->
+    <script>
+        function toggleNavbar() {
+            var navbarMenu = document.getElementById('navbarMenu');
+            navbarMenu.classList.toggle('show');
+        }
+    </script>
+
+    @RenderSection("Scripts", required: false) <!-- Section for additional scripts -->
+</body>
+</html>

@@ -1,0 +1,177 @@
+﻿
+@{
+    ViewData["Title"] = "About Us Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DernSupport2</title>
+    <style>
+        .about-hero {
+            background-color: #007bff;
+            color: #fff;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+            .about-hero h1 {
+                margin: 0;
+                font-size: 2.5rem;
+            }
+
+            .about-hero p {
+                font-size: 1.25rem;
+                margin-top: 10px;
+            }
+
+        .about-content {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-section {
+            margin-bottom: 30px;
+        }
+
+            .about-section h2 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            .about-section p {
+                font-size: 1.1rem;
+                color: #555;
+            }
+
+            .about-section ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .about-section ul li {
+                    padding: 8px 0;
+                    font-size: 1rem;
+                    color: #555;
+                }
+
+        .about-team {
+            margin-top: 30px;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .team-member {
+            text-align: center;
+            flex: 1 1 200px;
+            margin: 10px;
+        }
+
+            .team-member img {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 10px;
+            }
+
+            .team-member h3 {
+                margin: 0;
+                font-size: 1.2rem;
+                color: #333;
+            }
+
+            .team-member p {
+                margin: 5px 0 0;
+                font-size: 1rem;
+                color: #777;
+            }
+
+        .about-contact {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+            .about-contact h2 {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            .about-contact p {
+                font-size: 1.1rem;
+                color: #555;
+            }
+
+            .about-contact a {
+                color: #007bff;
+                text-decoration: none;
+            }
+
+                .about-contact a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+    <section class="about-hero">
+        <h1>Welcome to the About Us Page</h1>
+        <p>Learn more about our mission, values, and the team that makes it all happen.</p>
+    </section>
+
+    <section class="about-content">
+        <div class="about-section">
+            <h2>Our Mission</h2>
+            <p>We strive to provide the best services to our clients with a focus on innovation, integrity, and excellence.</p>
+        </div>
+
+        <div class="about-section">
+            <h2>Our Values</h2>
+            <ul>
+                <li><strong>Integrity:</strong> We believe in doing the right thing, always.</li>
+                <li><strong>Innovation:</strong> Constantly seeking new and better ways to serve our clients.</li>
+                <li><strong>Excellence:</strong> Commitment to the highest standards in everything we do.</li>
+            </ul>
+        </div>
+
+        <div class="about-team">
+            <h2>Meet the Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <img src="~/images/team1.jpg" alt="Team Member 1" />
+                    <h3>John Doe</h3>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="team-member">
+                    <img src="~/images/team2.jpg" alt="Team Member 2" />
+                    <h3>Jane Smith</h3>
+                    <p>Chief Marketing Officer</p>
+                </div>
+                <div class="team-member">
+                    <img src="~/images/team3.jpg" alt="Team Member 3" />
+                    <h3>Michael Brown</h3>
+                    <p>Head of Development</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="about-contact">
+            <h2>Contact Us</h2>
+            <p>Have questions? Reach out to us at <a href="mailto:info@dernsupport2.com">info@dernsupport2.com</a>.</p>
+        </div>
+    </section>
+</body>
+</html>

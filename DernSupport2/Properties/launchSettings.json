@@ -16,7 +16,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "launchUrl": "swagger" // Set this to "swagger" to open Swagger UI
+      "launchUrl": "" // Set this to the Razor Page URL you want to open
     },
     "https": {
       "commandName": "Project",
@@ -26,7 +26,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "launchUrl": "swagger" // Set this to "swagger" to open Swagger UI
+      "launchUrl": "" // Set this to the Razor Page URL you want to open
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -34,7 +34,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "launchUrl": "swagger" // Set this to "swagger" to open Swagger UI
+      "launchUrl": "" // Set this to the Razor Page URL you want to open
     }
   }
 }
