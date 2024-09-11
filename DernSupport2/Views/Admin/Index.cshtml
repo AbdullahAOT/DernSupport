@@ -1,7 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml"; // Using shared layout
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -11,69 +10,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DernSupport2</title>
     <style>
-        .admin-hero {
-            background-color: #343a40;
-            color: #fff;
-            padding: 50px 20px;
-            text-align: center;
-        }
-
-            .admin-hero h1 {
-                margin: 0;
-                font-size: 2.5rem;
-            }
-
-        .admin-content {
-            padding: 40px 20px;
-            max-width: 1200px;
+        /* Your existing styles */
+        .user-list {
+            max-width: 800px;
             margin: auto;
+            padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .admin-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
+            .user-list table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        .admin-item {
-            flex: 1 1 30%;
-            background-color: #fff;
+            .user-list th, .user-list td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: left;
+            }
+
+            .user-list th {
+                background-color: #f2f2f2;
+            }
+
+        .form-container {
+            max-width: 600px;
+            margin: auto;
             padding: 20px;
+            background-color: #f8f9fa;
             border-radius: 8px;
-            text-align: center;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-            .admin-item h3 {
-                font-size: 1.5rem;
-                color: #333;
-                margin-bottom: 10px;
-            }
-
-            .admin-item p {
-                font-size: 1rem;
-                color: #555;
-            }
-
-        .admin-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+        .form-group {
+            margin-bottom: 15px;
         }
 
-            .admin-button:hover {
-                background-color: #0056b3;
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
             }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+            .form-group button {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .form-group button:hover {
+                    background-color: #0056b3;
+                }
     </style>
 </head>
 <body>
@@ -83,23 +84,168 @@
     </section>
 
     <section class="admin-content">
-        <div class="admin-section">
-            <div class="admin-item">
-                <h3>User Management</h3>
-                <p>Manage users, roles, and permissions.</p>
-                <button class="admin-button">Go to Users</button>
-            </div>
-            <div class="admin-item">
-                <h3>Settings</h3>
-                <p>Configure application settings and preferences.</p>
-                <button class="admin-button">Go to Settings</button>
-            </div>
-            <div class="admin-item">
-                <h3>Reports</h3>
-                <p>View and export system reports.</p>
-                <button class="admin-button">Go to Reports</button>
-            </div>
+        <!-- User List Section -->
+        <div class="user-list">
+            <h3>Users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body">
+                    <!-- Users will be dynamically loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Update User Form -->
+        <div class="form-container" id="update-user-form-container" style="display: none;">
+            <h3>Update User</h3>
+            <form id="update-user-form">
+                <div class="form-group">
+                    <label for="user-id">User ID</label>
+                    <input type="text" id="user-id" name="user-id" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" name="first-name" required />
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" name="last-name" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="Admin">Admin</option>
+                        <option value="Customer">Customer</option>
+                        <option value="Employee">Employee</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Update User</button>
+                </div>
+            </form>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadUsers();
+
+            // Load all users
+            async function loadUsers() {
+                try {
+                    const response = await fetch('/api/users', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + localStorage.getItem('token') // Add token if required
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to load users');
+                    }
+
+                    const users = await response.json();
+                    const userTableBody = document.getElementById('user-table-body');
+                    userTableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        row.innerHTML = `
+                                    <td>${user.firstName}</td>
+                                    <td>${user.lastName}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.role}</td>
+                                    <td>
+                                        <button onclick="editUser('${user.id}')">Edit</button>
+                                    </td>
+                                `;
+
+                        userTableBody.appendChild(row);
+                    });
+                } catch (error) {
+                    console.error('Error loading users:', error);
+                }
+            }
+
+            // Populate form for editing a user
+            window.editUser = function (userId) {
+                fetch(`/api/users/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                    .then(response => response.json())
+                    .then(user => {
+                        document.getElementById('update-user-form-container').style.display = 'block';
+                        document.getElementById('user-id').value = user.id;
+                        document.getElementById('first-name').value = user.firstName;
+                        document.getElementById('last-name').value = user.lastName;
+                        document.getElementById('email').value = user.email;
+                        document.getElementById('role').value = user.role;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user details:', error);
+                    });
+            };
+
+            // Handle form submission to update user
+            document.getElementById('update-user-form').addEventListener('submit', async function (event) {
+                event.preventDefault();
+
+                const userId = document.getElementById('user-id').value;
+                const firstName = document.getElementById('first-name').value;
+                const lastName = document.getElementById('last-name').value;
+                const email = document.getElementById('email').value;
+                const role = document.getElementById('role').value;
+
+                try {
+                    const response = await fetch(`/api/users/${userId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + localStorage.getItem('token') // If needed
+                        },
+                        body: JSON.stringify({
+                            id: userId,
+                            firstName: firstName,
+                            lastName: lastName,
+                            email: email,
+                            userName: email, // Assuming the username is the same as the email
+                            role: role
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorResponse = await response.json();
+                        console.error('Failed to update user:', errorResponse);
+                        alert(`Error updating user: ${errorResponse.message || 'Unknown error'}`);
+                        return;
+                    }
+
+                    alert('User updated successfully!');
+                    loadUsers(); // Refresh the user list
+                } catch (error) {
+                    console.error('Error updating user:', error);
+                    alert('Error updating user. Check the console for more details.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

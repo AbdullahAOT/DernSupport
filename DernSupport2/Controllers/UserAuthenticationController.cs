@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DernSupport2.Repositories.Services;
 
 namespace DernSupport2.Controllers
 {
@@ -45,25 +46,24 @@ namespace DernSupport2.Controllers
                 UserName = model.Username,
                 Email = model.Email,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                Role = "Customer" // Ensure the Role is set to "Customer" during registration
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            if (await _roleManager.RoleExistsAsync("Customer"))
-            {
-                await _userManager.AddToRoleAsync(user, "Customer");
-            }
-            else
+            if (!await _roleManager.RoleExistsAsync("Customer"))
             {
                 await _roleManager.CreateAsync(new IdentityRole("Customer"));
-                await _userManager.AddToRoleAsync(user, "Customer");
             }
+
+            await _userManager.AddToRoleAsync(user, "Customer");
 
             return Ok("User registered successfully!");
         }
+
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login(UserLoginDTO model)
@@ -79,35 +79,31 @@ namespace DernSupport2.Controllers
             if (!result.Succeeded)
                 return Unauthorized("Invalid username or password.");
 
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var authClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
+            // Fetch the updated roles for the user
+            var roles = await _userManager.GetRolesAsync(user);
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 expires: DateTime.Now.AddHours(3),
-                claims: authClaims,
+                claims: new List<Claim>
+                {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, roles.FirstOrDefault() ?? "Customer") // Fetch the updated role
+                },
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
             );
 
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = token.ValidTo
+                expiration = token.ValidTo,
+                role = roles.FirstOrDefault() // Ensure the updated role is reflected here
             });
         }
+
 
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()

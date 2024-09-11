@@ -12,7 +12,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Remove Razor Pages support and keep only MVC with views.
 builder.Services.AddControllersWithViews(); // Adds support for MVC with views
 
 // Configure Entity Framework Core with SQL Server
@@ -103,6 +102,16 @@ else
     app.UseHsts();
 }
 
+// Middleware to prevent caching of sensitive pages
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Cache-Control", "no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+    context.Response.Headers.Add("Pragma", "no-cache");
+    context.Response.Headers.Add("Expires", "-1");
+
+    await next();
+});
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -140,7 +149,8 @@ async Task SeedAdminAsync(UserManager<ApplicationUser> userManager, RoleManager<
         Email = "admin@example.com",
         FirstName = "Admin",
         LastName = "User",
-        EmailConfirmed = true // Assuming email confirmation is not needed for the seeded admin
+        EmailConfirmed = true, // Assuming email confirmation is not needed for the seeded admin
+        Role = "Admin" // Set the Role to "Admin" to avoid null values
     };
 
     if (await userManager.FindByNameAsync(adminUser.UserName) == null)
