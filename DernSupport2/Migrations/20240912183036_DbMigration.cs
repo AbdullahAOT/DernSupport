@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DernSupport2.Migrations
 {
     /// <inheritdoc />
-    public partial class DBMigration : Migration
+    public partial class DbMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

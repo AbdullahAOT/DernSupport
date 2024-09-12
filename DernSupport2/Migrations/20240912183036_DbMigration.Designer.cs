@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DernSupport2.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240911174112_DBMigration")]
-    partial class DBMigration
+    [Migration("20240912183036_DbMigration")]
+    partial class DbMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

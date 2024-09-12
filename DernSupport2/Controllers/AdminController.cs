@@ -1,4 +1,5 @@
 ﻿using DernSupport2.Models;
+using DernSupport2.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,27 +21,36 @@ namespace DernSupport2.Controllers
             _roleManager = roleManager;
         }
 
-        // PUT: api/Admin/ChangeUserRole
-        [HttpPut("ChangeUserRole")]
-        public async Task<IActionResult> ChangeUserRole(string userId, string newRole)
+        // POST: api/Admin/CreateUser
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] AdminUserCreationDTO adminUserDto)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound("User not found.");
+            if (adminUserDto == null)
+                return BadRequest("Invalid user data.");
 
-            var currentRoles = await _userManager.GetRolesAsync(user);
-            var removeRolesResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-            if (!removeRolesResult.Succeeded)
-                return BadRequest("Failed to remove existing roles.");
+            var user = new ApplicationUser
+            {
+                UserName = adminUserDto.Username,
+                Email = adminUserDto.Email,
+                FirstName = adminUserDto.FirstName,
+                LastName = adminUserDto.LastName,
+                EmailConfirmed = true,
+                Role = adminUserDto.Role
+            };
 
-            if (!await _roleManager.RoleExistsAsync(newRole))
-                return BadRequest("Role does not exist.");
+            var result = await _userManager.CreateAsync(user, adminUserDto.Password);
 
-            var addRoleResult = await _userManager.AddToRoleAsync(user, newRole);
-            if (!addRoleResult.Succeeded)
-                return BadRequest("Failed to assign new role.");
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
 
-            return Ok($"User role updated to {newRole} successfully.");
+            if (!await _roleManager.RoleExistsAsync(adminUserDto.Role))
+                return BadRequest("Specified role does not exist.");
+
+            var roleResult = await _userManager.AddToRoleAsync(user, adminUserDto.Role);
+            if (!roleResult.Succeeded)
+                return BadRequest("Failed to assign role.");
+
+            return Ok("User created successfully.");
         }
     }
 }
